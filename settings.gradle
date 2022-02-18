@@ -1,0 +1,13 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+rootProject.name = "AnyHttp"
+include ':app'
+include ':basehttp'
+include ':http_impl_okhttp'
+include ':http_impl_okhttp_rx2'
