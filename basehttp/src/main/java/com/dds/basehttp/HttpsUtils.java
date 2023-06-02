@@ -1,4 +1,4 @@
-package com.dds.http;
+package com.dds.basehttp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +29,7 @@ public class HttpsUtils {
         public X509TrustManager trustManager;
     }
 
-    public static SSLParams getSslSocketFactory(X509TrustManager trustManager, InputStream bksFile,
-                                                String password, InputStream[] certificates) {
+    public static SSLParams getSslSocketFactory(X509TrustManager trustManager, InputStream bksFile, String password, InputStream[] certificates) {
         SSLParams sslParams = new SSLParams();
         try {
             //这里可以解析p12证书, 也可以使用prepareKeyManager方法使用bks证书
