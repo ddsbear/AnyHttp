@@ -33,7 +33,7 @@ import javax.net.ssl.X509TrustManager;
 public class UrlConnUtils {
     private static final String TAG = "dds_UrlConnUtils";
 
-    public static String sendPost(String u, String json) {
+    public static String sendPostJson(String u, String json) {
         StringBuilder sbf = new StringBuilder();
         try {
             URL url = new URL(u);
@@ -51,6 +51,37 @@ public class UrlConnUtils {
             if (!"".equals(json)) {
                 out.writeBytes(json);
             }
+            out.flush();
+            out.close();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String lines;
+            while ((lines = reader.readLine()) != null) {
+                lines = new String(lines.getBytes(), "utf-8");
+                sbf.append(lines);
+            }
+            reader.close();
+            connection.disconnect();
+        } catch (IOException e) {
+            return null;
+        }
+        return sbf.toString();
+    }
+
+    public static String sendGet(String u){
+        StringBuilder sbf = new StringBuilder();
+        try {
+            URL url = new URL(u);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            trustAllHosts(connection);
+            connection.setHostnameVerifier(DO_NOT_VERIFY);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setRequestMethod("GET");
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(true);
+            connection.addRequestProperty("Content-Type", "application/json");
+            connection.connect();
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             out.flush();
             out.close();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
